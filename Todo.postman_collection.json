@@ -1,0 +1,96 @@
+{
+  "info": {
+    "name": "Todo API Render",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    },
+    {
+      "key": "taskId",
+      "value": "1"
+    }
+  ],
+  "item": [
+    {
+      "name": "Ping",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/ping",
+        "header": []
+      }
+    },
+    {
+      "name": "Liste",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/tasks",
+        "header": []
+      }
+    },
+    {
+      "name": "Créer",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/api/tasks",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"tache\": \"Tester Render\", \"date\": \"2026-11-27\"}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const loc = pm.response.headers.get(\"Location\");",
+              "if (pm.response.code === 201 && loc) pm.collectionVariables.set(\"taskId\", loc.split(\"/\").pop());"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Lire",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/tasks/{{taskId}}",
+        "header": []
+      }
+    },
+    {
+      "name": "Modifier",
+      "request": {
+        "method": "PUT",
+        "url": "{{baseUrl}}/api/tasks/{{taskId}}",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"tache\": \"Tester PostgreSQL\", \"date\": \"2026-11-28\"}"
+        }
+      }
+    },
+    {
+      "name": "Supprimer",
+      "request": {
+        "method": "DELETE",
+        "url": "{{baseUrl}}/api/tasks/{{taskId}}",
+        "header": []
+      }
+    }
+  ]
+}
